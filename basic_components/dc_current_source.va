@@ -1,0 +1,14 @@
+/*-----------------------------------------------------------------------------
+-- Verilog-A model for an ideal dc current source
+-----------------------------------------------------------------------------*/
+
+`include "disciplines.vams"
+
+module dc_current_source (p, n);
+    parameter real I0=0;    // dc current (A)
+    output p, n;
+    electrical p, n;
+
+    analog
+        I(p,n) <+ I0;
+endmodule

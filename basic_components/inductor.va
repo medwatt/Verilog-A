@@ -1,0 +1,14 @@
+/*-----------------------------------------------------------------------------
+-- Verilog-A model for a simple linear inductor
+-----------------------------------------------------------------------------*/
+
+`include "disciplines.vams"
+
+module inductor (p, n);
+    parameter real L=1n;    // inductance (H)
+    inout p, n;
+    electrical p, n;
+
+    analog
+        V(p,n) <+ L * ddt(l(p,n));
+endmodule

@@ -1,0 +1,14 @@
+/*-----------------------------------------------------------------------------
+-- Verilog-A model for a simple linear resistor
+-----------------------------------------------------------------------------*/
+
+`include "disciplines.vams"
+
+module resistor (p, n);
+    parameter real R=1k;    // Resitance (Ohms)
+    inout p, n;
+    electrical p, n;
+
+    analog
+        V(p,n) <+ R * I(p,n);
+endmodule

@@ -1,0 +1,17 @@
+/*-----------------------------------------------------------------------------
+-- Verilog-A model for an sinusoidal voltage source
+-----------------------------------------------------------------------------*/
+
+`include "disciplines.vams"
+`include "constants.vams"
+
+module sine_voltage_source (p, n);
+    parameter real MAG=1;       // amplitude (V)
+    parameter real PHASE=0;     // phase (rad)
+    parameter real FREQ=1k;     // frequency (Hz)
+    output p, n;
+    electrical p, n;
+
+    analog
+        V(p,n) <+ MAG * sin (`M_TWO_PI * FREQ * $abstime + PHASE);
+endmodule

@@ -1,0 +1,31 @@
+/*-----------------------------------------------------------------------------
+-- Verilog-A model for an ideal pulse voltage source
+-----------------------------------------------------------------------------*/
+
+`include "disciplines.vams"
+
+module pulse_voltage_source (p, n);
+    parameter real PERIOD=1m;               // period (s)
+    parameter real DUTY=50 from (0:100);    // duty cycle (%)
+    parameter real OUT_HIGH=1;              // output high voltage (V)
+    parameter real OUT_LOW=0;               // output low voltage (V)
+    parameter real T_RISE=PERIOD/(100);     // rise time (s)
+    parameter real T_FALL=T_RISE;           // fall time (s)
+    parameter real T_DELAY=0;               // delay time (s)
+    inout p, n;
+    electrical p, n;
+    integer out;
+
+    analog begin
+        @(initial_step)
+            out = OUT_LOW;
+
+        @(timer(PERIOD, PERIOD))
+            out = (out == OUT_LOW) ? OUT_HIGH : OUT_LOW;
+
+        @(timer(PERIOD * (1 - DUTY / 100.0), PERIOD))
+            out = (out == OUT_LOW) ? OUT_HIGH : OUT_LOW;
+
+        V(p,n) <+ transition(out, T_DELAY, T_RISE, T_FALL);
+    end
+endmodule

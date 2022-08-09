@@ -1,0 +1,15 @@
+/*-----------------------------------------------------------------------------
+-- Verilog-A model for an ideal dc voltage source
+-----------------------------------------------------------------------------*/
+
+`include "disciplines.vams"
+
+module dc_voltage_source (p, n);
+    parameter real V0=0;    // dc voltage (V)
+    output p, n;
+    electrical p, n;
+
+    analog
+        V(p,n) <+ V0;
+endmodule
+

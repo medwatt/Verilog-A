@@ -1,0 +1,14 @@
+/*-----------------------------------------------------------------------------
+-- Verilog-A model for a simple linear capacitor
+-----------------------------------------------------------------------------*/
+
+`include "disciplines.vams"
+
+module capacitor (p, n);
+    parameter real C=1p;    // Capactiance (F)
+    inout p, n;
+    electrical p, n;
+
+    analog
+        I(p,n) <+ C * ddt(V(p,n));
+endmodule

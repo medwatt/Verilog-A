@@ -1,0 +1,20 @@
+/*-----------------------------------------------------------------------------
+-- Verilog-A model for an ideal relay
+-----------------------------------------------------------------------------*/
+
+`include "disciplines.vams"
+
+module relay (ps, ns, p, n);
+    parameter real THRESH=0.0;  // Threshold voltage (V)
+    inout ps, ns, p, n;
+    electrical ps, ns, p, n;
+
+    analog begin
+        @(cross(V(ps,ns) - THRESH))
+            ;
+        if (V(ps,ns) > THRESH)
+            V(p,n) <+ 0; // closed
+        else
+            I(p,n) <+ 0; // open
+    end
+endmodule
