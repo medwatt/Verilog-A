@@ -1,0 +1,12 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "adc.va"
+
+V0 (net1 0) vsource type=dc dc=0.5
+V1 (input net1) vsource type=sine ampl=0.5 freq=1K
+V2 (clk 0) vsource type=pulse val0=0 val1=5.0 period=0.025m delay=0 rise=1n fall=1n
+I1 (input clk bit0 bit1 bit2 bit3 bit4 bit5 bit6 bit7) adc
+
+simOpts options save=all saveahdlvars=all
+tran1 tran stop = 2m

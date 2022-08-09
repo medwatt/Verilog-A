@@ -1,0 +1,56 @@
+// VerilogA for a pipeline ADC
+
+`include "disciplines.vams"
+
+module adc (in, clk, out);
+    // ADC paramaters
+    parameter integer bits = 8 from [1:24];             // resolution (bits)
+    parameter real fullscale = 1.0;                     // input range is from 0 to fullscale (V)
+
+    // output waveform parameters
+    parameter real vdd = 5.0;                           // voltage level of logic 1 (V)
+    parameter real td = 0;                              // delay from clock edge to output (s)
+    parameter tt = 0;                                   // transition time to output
+
+    // sampling parameters
+    parameter real thresh = vdd / 2;                    // logic threshold
+    parameter integer dir = 1 from [-1:1] exclude 0;    // 1 for rising edges, -1 for falling
+
+    // ports
+    input in, clk; voltage in, clk;
+    output [0:bits-1] out; voltage [0:bits-1] out;
+
+    // local variables
+    real sample, midpoint;
+    integer result [0:bits-1];
+    genvar i;
+
+    analog begin
+        @(initial_step)
+            // we always compare the signal to 1/2 of fullscale voltage
+            midpoint = fullscale / 2.0;
+
+        // 1. sampling block
+        @(cross(V(clk) - thresh, +1)) begin
+            sample = V(in);
+
+            // 2. N-stage pipeline
+            for (i=bits-1; i>=0; i=i-1) begin
+                // 2a. comparator block
+                if (sample > midpoint) begin
+                    result[i] = vdd;
+                    // 2b. summer block
+                    sample = sample - midpoint;
+                end
+                else
+                    result[i] = 0.0;
+                // multiplier block
+                sample = 2.0 * sample;
+            end
+        end
+
+        // 3. send to output
+        for (i=0; i<bits; i=i+1)
+            V(out[i]) <+ transition(result[i], td, tt);
+    end
+endmodule
