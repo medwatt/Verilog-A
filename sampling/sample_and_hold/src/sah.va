@@ -1,0 +1,18 @@
+`include "disciplines.vams"
+
+module sah (in, out);
+    input in; voltage in;
+    output out; voltage out;
+    parameter real period = 1 from (0:inf);          // sampling period (s)
+    parameter real toff = 0 from [0:inf);            // offset time for sampling [when to begin sampling] (s)
+    parameter real td = 0 from [0:inf);              // delay from sampling to output (s)
+    parameter real tt = period/100 from [0:inf);     // output transition time (s)
+    real hold;
+
+    analog begin
+        @(timer(toff, period) or initial_step) begin
+            hold = V(in);
+        end
+        V(out) <+ transition(hold, td, tt);
+    end
+endmodule

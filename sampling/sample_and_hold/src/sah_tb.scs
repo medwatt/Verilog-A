@@ -1,0 +1,10 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "sah.va"
+
+V0 (in 0) vsource dc=0 type=sine ampl=1 freq=100K
+I1 (in out) sah period=1u toff=0 td=0
+
+simOpts options save=all saveahdlvars=all
+tran tran stop=20u
