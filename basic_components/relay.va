@@ -5,7 +5,7 @@
 `include "disciplines.vams"
 
 module relay (ps, ns, p, n);
-    parameter real THRESH=0.0;  // Threshold voltage (V)
+    parameter real THRESH=0.0;  // threshold voltage (V)
     inout ps, ns, p, n;
     electrical ps, ns, p, n;
 

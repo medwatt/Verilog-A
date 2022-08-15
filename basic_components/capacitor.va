@@ -5,7 +5,7 @@
 `include "disciplines.vams"
 
 module capacitor (p, n);
-    parameter real C=1p;    // Capactiance (F)
+    parameter real C=1p;    // capactiance (F)
     inout p, n;
     electrical p, n;
 
