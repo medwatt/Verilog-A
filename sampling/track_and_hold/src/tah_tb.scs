@@ -1,0 +1,11 @@
+simulator lang=spectre
+global 0
+
+ahdl_include "tah.va"
+
+I0 (in clk out) tah thresh=0.5 td=0 tt=0
+V0 (in 0) vsource type=sine ampl=1 freq=100K
+V1 (clk 0) vsource type=pulse val0=0 val1=1 period=1u rise=1n fall=1n
+
+simOpts options save=all saveahdlvars=all
+tran tran stop=20u

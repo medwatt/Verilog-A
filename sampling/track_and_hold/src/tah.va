@@ -1,0 +1,22 @@
+`include "disciplines.vams"
+
+module tah (in, clk, out);
+    input in, clk; voltage in, clk;
+    output out; voltage out;
+    parameter real thresh = 1 from (0:inf);    // clock threshold voltage (V)
+    parameter real td = 0 from [0:inf);        // delay from sampling to output (s)
+    parameter real tt = 0 from [0:inf);        // output transition time (s)
+    real track;
+
+    analog begin
+        // track when the clock is HIGH
+        if (V(clk) > thresh)
+            track = V(in);
+
+        // start holding when the clock goes LOW
+        @(cross(V(clk)-thresh, -1))
+            trach = V(in);
+
+        V(out) <+ transition(track, td, tt);
+    end
+endmodule
